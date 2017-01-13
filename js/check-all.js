@@ -1,3 +1,7 @@
+var opts = {
+        selectAllId: 'checkAll',
+        groupClass: 'check'
+}
 var $we = (function(options) {
     var check = function(options) {
         //让ie9以下兼容getElementsByClassName方法
@@ -80,4 +84,4 @@ var $we = (function(options) {
     return {
         check:check
     }
-})({});
+})(opts);
