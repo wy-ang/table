@@ -1,8 +1,5 @@
-(function(window) {
-    var Check = function(options) {};
-
-    //初始化
-    Check.prototype.init = function() {
+var $we = (function(options) {
+    var check = function(options) {
         //让ie9以下兼容getElementsByClassName方法
         if (!document.getElementsByClassName) {
             document.getElementsByClassName = function(className) {
@@ -38,56 +35,49 @@
             }
         }
 
-        this.checkAllFun();
-        this.checkSingleFun();
-    }
+        var selectAllEm = document.getElementById(options.selectAllId);
+        var selectSingleEm = document.getElementsByClassName(options.groupClass);
+        var checkArr = [];
 
-    //设置默认element
-    var defaults = {
-        id: 'checkAll',
-        className: 'check'
-    };
-
-    var checkAll = document.getElementById(defaults.id);
-    var checkSingle = document.getElementsByClassName(defaults.className);
-    var checkArr = [];
-
-    //全选方法
-    Check.prototype.checkAllFun = function() {
-        checkAll.onclick = function() {
-            if (checkArr.length > -1) {
-                checkArr.length = 0;
-            }
-            for (var j = 0, len = checkSingle.length; j < len; j++) {
-                checkSingle[j].checked = this.checked;
-                if (checkSingle[j].checked) {
-                    checkArr.push(checkSingle[j]);
-                } else {
-                    checkArr.remove(checkSingle[j]);
+        //全选方法
+        var selectAll = function() {
+            selectAllEm.onclick = function() {
+                if (checkArr.length > -1) {
+                    checkArr.length = 0;
                 }
-                console.log(checkArr);
-            }
-        }
-    };
-
-    //单选方法
-    Check.prototype.checkSingleFun = function() {
-        for (var k = 0, len = checkSingle.length; k < len; k++) {
-            checkSingle[k].onclick = function() {
-                if (this.checked) {
-                    checkArr.push(this);
-                } else {
-                    checkAll.checked = this.checked;
-                    checkArr.remove(this);
+                for (var j = 0, len = selectSingleEm.length; j < len; j++) {
+                    selectSingleEm[j].checked = this.checked;
+                    if (selectSingleEm[j].checked) {
+                        checkArr.push(selectSingleEm[j]);
+                    } else {
+                        checkArr.remove(selectSingleEm[j]);
+                    }
+                    console.log(checkArr);
                 }
-                console.log(checkArr);
-                if (checkArr.length == checkSingle.length) {
-                    checkAll.checked = true;
+            }
+        };
+
+        //单选方法
+        var selectSingle = function() {
+            for (var k = 0, len = selectSingleEm.length; k < len; k++) {
+                selectSingleEm[k].onclick = function() {
+                    if (this.checked) {
+                        checkArr.push(this);
+                    } else {
+                        selectAllEm.checked = this.checked;
+                        checkArr.remove(this);
+                    }
+                    console.log(checkArr);
+                    if (checkArr.length == selectSingleEm.length) {
+                        selectAllEm.checked = true;
+                    }
                 }
             }
         }
+        selectAll();
+        selectSingle();
     }
-
-    window.check = new Check();
-    window.check.init();
-})(window);
+    return {
+        check:check
+    }
+})({});
